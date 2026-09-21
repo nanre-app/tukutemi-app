@@ -1,0 +1,332 @@
+:root {
+  --bg: #eef1f6;
+  --surface: #ffffff;
+  --ink: #14213d;
+  --muted: #5b6478;
+  --line: #d5dbe7;
+  --accent: #3a5bff;
+  --accent-strong: #2544e0;
+  --accent-ink: #ffffff;
+  --danger: #b3261e;
+  --danger-bg: #fdecea;
+  --notice-bg: #e8edff;
+  --radius: 12px;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Meiryo', system-ui,
+    sans-serif;
+  line-height: 1.7;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- ヘッダー ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.site-header__user {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* ---------- ボタン・リンク ---------- */
+.button {
+  display: inline-block;
+  padding: 8px 18px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--accent);
+}
+
+.button--ghost:hover:not(:disabled) {
+  background: var(--notice-bg);
+  border-color: var(--accent);
+}
+
+.button--wide {
+  width: 100%;
+  padding: 12px 18px;
+}
+
+.link-button {
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- トップページ: 左にお題、右に一覧 ---------- */
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.theme {
+  position: sticky;
+  top: 88px;
+}
+
+.theme__title {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+
+.theme__frame {
+  overflow: hidden;
+  border: 6px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.theme__image {
+  width: 100%;
+  height: auto;
+}
+
+.theme__name {
+  margin: 12px 0 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.theme__hint {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+}
+
+/* ---------- 投稿画像の一覧 ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid__item {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.grid__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--line);
+}
+
+.grid__date {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.empty {
+  padding: 32px 24px;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+/* ---------- フォーム(ログイン・投稿) ---------- */
+.card {
+  max-width: 420px;
+  margin: 24px auto;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.card--wide {
+  max-width: 560px;
+}
+
+.card__title {
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+}
+
+.card__switch {
+  margin: 20px 0 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field__label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.field__input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+
+.preview {
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.error,
+.notice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+}
+
+.error {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.notice {
+  background: var(--notice-bg);
+  color: var(--ink);
+}
+
+/* ---------- スマホ・タブレット: 縦に並べる ---------- */
+@media (max-width: 860px) {
+  .container {
+    padding: 24px 16px 48px;
+  }
+
+  .site-header {
+    padding: 10px 16px;
+  }
+
+  .site-header__user {
+    display: none;
+  }
+
+  .board {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .theme {
+    position: static;
+  }
+}

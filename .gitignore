@@ -1,0 +1,19 @@
+# 依存パッケージ
+node_modules/
+
+# Next.js のビルド成果物
+.next/
+out/
+
+# 環境変数(キーをGitHubに上げない)
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# その他
+.DS_Store
+*.log
+next-env.d.ts
