@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <Link href="/" className="site-header__logo">
-        つくてみ
+        tukutemi
       </Link>
 
       <nav className="site-header__nav" aria-label="メインメニュー">

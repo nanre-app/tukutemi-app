@@ -2,7 +2,7 @@
 
 お題の画像をもとに、生成AIでつくった画像を投稿して見せ合うWEBアプリです。
 
-- 組織: Nanre
+- 組織: nanre-app
 - 構成: Next.js(App Router / JavaScript)+ Supabase(認証・データベース・画像保存)+ Vercel(公開)
 - 機能: ログイン(メール+パスワード)/ 画像の投稿 / 投稿一覧(閲覧は誰でも可)
 - 画面: 左に「お題」の画像、右に、そのお題に投稿された作品の一覧
@@ -56,7 +56,7 @@ npm run dev
 
 ## Vercel での公開
 
-1. GitHub の `Nanre/tukutemi-app` を Vercel にインポートする
+1. GitHub の `nanre-app/tukutemi-app` を Vercel にインポートする
 2. Environment Variables に上の2つの変数を登録する
 3. Deploy する
 

@@ -34,7 +34,7 @@ export default function Board() {
   if (status === 'error') {
     return (
       <p className="error" role="alert">
-        お題を読み込めませんでした。時間をおいて、ページを再読み込みしてください。
+        画像を読み込めませんでした。時間をおいて、ページを再読み込みしてください。
       </p>
     );
   }
