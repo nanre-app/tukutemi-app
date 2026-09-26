@@ -11,7 +11,23 @@
   --danger-bg: #fdecea;
   --notice-bg: #e8edff;
   --radius: 12px;
-  color-scheme: light;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161f;
+    --surface: #1e2130;
+    --ink: #edeff5;
+    --muted: #9aa2b8;
+    --line: #33384d;
+    --accent: #6d87ff;
+    --accent-strong: #869aff;
+    --accent-ink: #0d0f18;
+    --danger: #ff8a80;
+    --danger-bg: #3a1f1e;
+    --notice-bg: #232a4d;
+  }
 }
 
 *,
