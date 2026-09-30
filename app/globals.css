@@ -362,3 +362,11 @@ a {
   margin-top: 12px;
   text-align: right;
 }
+.countdown {
+  margin: 12px 0;
+  font-weight: bold;
+}
+
+.countdown--closed {
+  color: #d9534f;
+}
