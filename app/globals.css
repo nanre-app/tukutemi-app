@@ -346,3 +346,19 @@ a {
     position: static;
   }
 }
+.theme-box {
+  margin-bottom: 32px;
+  padding: 16px;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 12px;
+}
+
+.theme__deadline {
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+.more {
+  margin-top: 12px;
+  text-align: right;
+}
