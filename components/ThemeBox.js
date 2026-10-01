@@ -1,6 +1,6 @@
 'use client';
 
-import PostList from '@/components/PostList';
+import RankingGrid from '@/components/RankingGrid';
 import { getThemeImageUrl, getPostDeadline } from '@/lib/themes';
 
 export default function ThemeBox({ theme, isLatest }) {
@@ -18,20 +18,18 @@ export default function ThemeBox({ theme, isLatest }) {
 
   return (
     <article className="theme-box">
-      <div className="board">
-        {/* 左: お題の画像 */}
-        <section className="theme" aria-labelledby={`theme-title-${theme.id}`}>
-          <h2 id={`theme-title-${theme.id}`} className="theme__title">
-            {isLatest ? '今回のお題' : '過去のお題'}
-          </h2>
+      <div className="theme-grid">
+        {/* お題画像 */}
+        <section className="theme-grid__theme">
           <div className="theme__frame">
             <img
               className="theme__image"
               src={getThemeImageUrl(theme.image_path)}
               alt={`お題: ${theme.title}`}
             />
+            <span className="badge">{isLatest ? '今回のお題' : '過去のお題'}</span>
           </div>
-          <p className="theme__name">{theme.title}</p>
+          <h2 className="theme__name">{theme.title}</h2>
           {deadlineText && (
             <p className="theme__deadline">
               {isOpen ? `投稿受付中(締切 ${deadlineText})` : `投稿は締め切りました(${deadlineText})`}
@@ -39,15 +37,8 @@ export default function ThemeBox({ theme, isLatest }) {
           )}
         </section>
 
-        {/* 右: このお題の投稿(4件まで) */}
-        <section aria-label="みんなの作品">
-          <PostList
-            themeId={theme.id}
-            limit={4}
-            moreHref={`/theme/${theme.id}`}
-            canPost={isOpen}
-          />
-        </section>
+        {/* 1〜3位の投稿・説明欄・広告欄 */}
+        <RankingGrid themeId={theme.id} moreHref={`/theme/${theme.id}`} canPost={isOpen} />
       </div>
     </article>
   );
