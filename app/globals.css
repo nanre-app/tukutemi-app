@@ -581,3 +581,49 @@ a {
     grid-column: span 1;
   }
 }
+/* ---------- スマホ: ドロワーをやめて画面下のメニューにする ---------- */
+@media (max-width: 860px) {
+  .container {
+    padding-inline: 16px;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .drawer,
+  .drawer--open {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+    transition: none;
+  }
+
+  /* 引き出しボタンは不要 */
+  .drawer__handle {
+    display: none;
+  }
+
+  /* メニューを常に表示して横並びにする */
+  .drawer__menu {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    padding: 6px 8px;
+    visibility: visible;
+  }
+
+  .drawer__menu li {
+    flex: 1;
+  }
+
+  .drawer__link {
+    padding: 10px 4px;
+    font-size: 0.8125rem;
+    text-align: center;
+  }
+}
