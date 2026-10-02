@@ -627,3 +627,150 @@ a {
     text-align: center;
   }
 }
+/* ---------- ランキングページ(アーケード風) ---------- */
+.ranking-page__theme {
+  max-width: 320px;
+  margin: 0 auto 24px;
+}
+
+.ranking-page__title {
+  margin: 12px 0 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.ranking {
+  display: grid;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.ranking__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 80px;
+  padding: 8px 16px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+/* 1位だけ倍の高さ */
+.ranking__row--first {
+  height: 160px;
+  border-color: #f5b301;
+  box-shadow: 0 0 16px rgba(245, 179, 1, 0.35);
+}
+
+.ranking__row:nth-child(2) {
+  border-color: #b0b6c2;
+}
+
+.ranking__row:nth-child(3) {
+  border-color: #cd7f32;
+}
+
+.ranking__rank {
+  flex: none;
+  width: 44px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-align: center;
+  color: var(--muted);
+}
+
+.ranking__row--first .ranking__rank {
+  font-size: 3rem;
+  color: #f5b301;
+}
+
+.ranking__thumb {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--line);
+}
+
+.ranking__row--first .ranking__thumb {
+  width: 136px;
+  height: 136px;
+}
+
+.ranking__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ranking__row--first .ranking__name {
+  font-size: 1.375rem;
+}
+
+.ranking__score {
+  flex: none;
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-align: right;
+}
+
+.ranking__score small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.ranking__like {
+  flex: none;
+  width: 44px;
+  height: 44px;
+}
+
+@media (max-width: 860px) {
+  .ranking__row {
+    gap: 8px;
+    height: 72px;
+    padding: 8px;
+  }
+
+  .ranking__row--first {
+    height: 144px;
+  }
+
+  .ranking__rank {
+    width: 32px;
+    font-size: 1.25rem;
+  }
+
+  .ranking__row--first .ranking__rank {
+    font-size: 2rem;
+  }
+
+  .ranking__thumb {
+    width: 48px;
+    height: 48px;
+  }
+
+  .ranking__row--first .ranking__thumb {
+    width: 120px;
+    height: 120px;
+  }
+
+  .ranking__score {
+    font-size: 1rem;
+  }
+
+  .ranking__like {
+    width: 28px;
+  }
+}
