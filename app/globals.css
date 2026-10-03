@@ -840,3 +840,44 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+/* ---------- マイページ: 編集まわり ---------- */
+.mypage__profile {
+  flex-wrap: wrap;
+}
+
+.mypage__avatar-box {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.mypage__name-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mypage__name-row .field__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.mypage__profile + .error,
+.mypage__profile + .notice {
+  margin-bottom: 16px;
+}
+
+.mypage__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 12px;
+}
+
+.mypage__delete {
+  color: var(--danger);
+  font-size: 0.8125rem;
+}
+.mypage__locked {
+  font-size: 0.75rem;
+}
