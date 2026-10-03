@@ -774,3 +774,69 @@ a {
     width: 28px;
   }
 }
+/* ---------- マイページ ---------- */
+.mypage__profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.mypage__avatar {
+  width: 64px;
+  height: 64px;
+  font-size: 1.5rem;
+}
+
+.mypage__who {
+  flex: 1;
+  min-width: 0;
+}
+
+.mypage__name {
+  margin: 0;
+  overflow: hidden;
+  font-size: 1.25rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mypage__email {
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mypage__list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mypage__meta {
+  padding: 8px 12px 0;
+}
+
+.mypage__theme {
+  margin: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mypage__score {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 860px) {
+  .mypage__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
