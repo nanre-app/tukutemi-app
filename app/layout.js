@@ -1,6 +1,7 @@
 import './globals.css';
 import Header from '@/components/Header';
 import NavDrawer from '@/components/NavDrawer';
+import ImageGuard from '@/components/ImageGuard';
 
 export const metadata = {
   title: 'tukutemi',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
       <body>
         <Header />
         <NavDrawer />
+        <ImageGuard />
         <main className="container">{children}</main>
       </body>
     </html>

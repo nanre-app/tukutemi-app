@@ -137,9 +137,11 @@ export default function PostPage() {
       return;
     }
 
-    const { error: insertError } = await supabase
+    const { data: inserted, error: insertError } = await supabase
       .from('posts')
-      .insert({ user_id: user.id, theme_id: theme.id, image_path: path });
+      .insert({ user_id: user.id, theme_id: theme.id, image_path: path })
+      .select('id')
+      .single();
 
     if (insertError) {
       console.error(insertError);
@@ -153,6 +155,25 @@ export default function PostPage() {
       }
       setBusy(false);
       return;
+    }
+
+      // 採点を依頼する。結果は待たずに一覧へ移動する(失敗しても投稿自体は成功のまま)
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (token && inserted?.id) {
+        fetch('/api/score', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ postId: inserted.id }),
+          keepalive: true,
+        }).catch((scoreError) => console.error(scoreError));
+      }
+    } catch (scoreError) {
+      console.error(scoreError);
     }
 
     router.push('/');
