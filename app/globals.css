@@ -996,3 +996,44 @@ img {
   object-fit: contain;
   background: var(--line);
 }
+/* ---------- マイページ: スマホ幅でプロフィールを縦並びにする ---------- */
+@media (max-width: 860px) {
+  .mypage__profile {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .mypage__avatar-box {
+    justify-items: center;
+  }
+
+  .mypage__who {
+    flex: none;
+    width: 100%;
+  }
+
+  /* 入力欄は1行ぶんの幅、ボタンはその下に並べる */
+  .mypage__name-row {
+    flex-wrap: wrap;
+  }
+
+  .mypage__name-row .field__input {
+    flex: 1 1 100%;
+  }
+
+  .mypage__name-row .button {
+    flex: 1 1 0;
+  }
+
+  /* ボタンの文字を折り返さない */
+  .mypage__profile .button {
+    white-space: nowrap;
+  }
+
+  /* カード直下のボタン(ログアウトなど)は横幅いっぱいにする */
+  .mypage__profile > .button {
+    width: 100%;
+  }
+}
