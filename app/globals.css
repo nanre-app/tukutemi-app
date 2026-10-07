@@ -972,3 +972,10 @@ img {
     display: none !important;
   }
 }
+/* ---------- 投稿画像は切り取らず、枠の中に全体を収める ---------- */
+.slot__image,
+.grid__image,
+.ranking__thumb {
+  object-fit: contain;
+  background: var(--line);
+}

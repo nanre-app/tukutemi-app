@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, IMAGE_BUCKET } from '@/lib/supabaseClient';
 import { fetchCurrentTheme, getPostDeadline } from '@/lib/themes';
 
-const MAX_BYTES = 5 * 1024 * 1024; // 5MB(supabase/schema.sql の設定と揃える)
+const MAX_INPUT_BYTES = 20 * 1024 * 1024; // 選べる元画像の上限(20MB)
+const MAX_BYTES = 5 * 1024 * 1024; // 保存する画像の上限(supabase/schema.sql の設定と揃える)
+const MAX_DIMENSION = 1600; // 長い辺の最大ピクセル数
 const EXTENSIONS = {
   'image/png': 'png',
   'image/jpeg': 'jpg',
@@ -23,6 +25,44 @@ function formatRemaining(ms) {
   return h > 0 ? `${h}時間 ${mm}分 ${ss}秒` : `${m}分 ${ss}秒`;
 }
 
+function canvasToBlob(canvas, type, quality) {
+  return new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+}
+
+// 大きすぎる画像を、縦横比を保ったまま縮小する(小さい画像はそのまま返す)
+async function fitImage(file) {
+  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  const longSide = Math.max(bitmap.width, bitmap.height);
+
+  if (longSide <= MAX_DIMENSION && file.size <= MAX_BYTES) {
+    bitmap.close();
+    return file;
+  }
+
+  const scale = Math.min(1, MAX_DIMENSION / longSide);
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; // 透明部分は白にする
+  ctx.fillRect(0, 0, width, height);
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close();
+
+  for (const type of ['image/webp', 'image/jpeg']) {
+    for (const quality of [0.9, 0.8, 0.7]) {
+      const blob = await canvasToBlob(canvas, type, quality);
+      if (blob && blob.type === type && blob.size <= MAX_BYTES) {
+        return new File([blob], `image.${EXTENSIONS[type]}`, { type });
+      }
+    }
+  }
+  throw new Error('too-large');
+}
+
 export default function PostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -32,7 +72,9 @@ export default function PostPage() {
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const selectionId = useRef(0);
 
   // 締切日時(お題に締切がなければ null)
   const deadline = useMemo(() => (theme ? getPostDeadline(theme) : null), [theme]);
@@ -88,8 +130,9 @@ export default function PostPage() {
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
-  function handleFileChange(event) {
+  async function handleFileChange(event) {
     const selected = event.target.files?.[0] ?? null;
+    const id = ++selectionId.current;
     setError('');
 
     if (!selected) {
@@ -101,12 +144,31 @@ export default function PostPage() {
       setError('PNG・JPEG・WebP の画像を選んでください。');
       return;
     }
-    if (selected.size > MAX_BYTES) {
+    if (selected.size > MAX_INPUT_BYTES) {
       setFile(null);
-      setError('画像のサイズは5MB以下にしてください。');
+      setError('画像のサイズは20MB以下にしてください。');
       return;
     }
-    setFile(selected);
+
+    setFile(null);
+    setProcessing(true);
+    try {
+      const fitted = await fitImage(selected);
+      if (id !== selectionId.current) return; // 別の画像が選び直された
+      setFile(fitted);
+    } catch (fitError) {
+      console.error(fitError);
+      if (id !== selectionId.current) return;
+      if (fitError.message !== 'too-large' && selected.size <= MAX_BYTES) {
+        // 縮小の機能が使えないブラウザでは、元の画像をそのまま使う
+        setFile(selected);
+      } else {
+        setFile(null);
+        setError('画像を縮小できませんでした。別の画像を選んでください。');
+      }
+    } finally {
+      if (id === selectionId.current) setProcessing(false);
+    }
   }
 
   async function handleSubmit(event) {
@@ -157,7 +219,7 @@ export default function PostPage() {
       return;
     }
 
-      // 採点を依頼する。結果は待たずに一覧へ移動する(失敗しても投稿自体は成功のまま)
+    // 採点を依頼する。結果は待たずに一覧へ移動する(失敗しても投稿自体は成功のまま)
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const token = sessionData.session?.access_token;
@@ -188,7 +250,7 @@ export default function PostPage() {
       <h1 className="card__title">作品を投稿する</h1>
       {theme ? (
         <p className="muted">
-          今回のお題「{theme.title}」をもとに生成AIでつくった画像を選んでください(PNG・JPEG・WebP、5MBまで)。
+          今回のお題「{theme.title}」をもとに生成AIでつくった画像を選んでください(PNG・JPEG・WebP、20MBまで。大きい画像は自動で縮小されます)。
         </p>
       ) : (
         <p className="muted">今回のお題はまだありません。次のお題が始まってから投稿してください。</p>
@@ -214,6 +276,8 @@ export default function PostPage() {
           />
         </label>
 
+        {processing && <p className="muted">画像を調整しています…</p>}
+
         {preview && <img className="preview" src={preview} alt="選んだ画像のプレビュー" />}
 
         {error && (
@@ -225,7 +289,7 @@ export default function PostPage() {
         <button
           type="submit"
           className="button button--wide"
-          disabled={!file || !theme || busy || closed}
+          disabled={!file || !theme || busy || closed || processing}
         >
           {busy ? '投稿中…' : '投稿する'}
         </button>
