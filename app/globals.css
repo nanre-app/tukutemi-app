@@ -1037,3 +1037,31 @@ img {
     width: 100%;
   }
 }
+/* ===== ランキングのタブ(このお題 / 年間ランキング) ===== */
+.ranking-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 16px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+}
+
+.ranking-tabs__tab {
+  padding: 8px 16px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.ranking-tabs__tab:hover {
+  opacity: 0.9;
+}
+
+.ranking-tabs__tab.is-active {
+  border-bottom-color: currentColor;
+  font-weight: 700;
+  opacity: 1;
+}

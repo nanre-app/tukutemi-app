@@ -6,11 +6,13 @@ import { useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { getThemeImageUrl } from '@/lib/themes';
 import RankingList from '@/components/RankingList';
+import AnnualRankingList from '@/components/AnnualRankingList';
 
 export default function ThemeRankingPage() {
   const { id } = useParams();
   const [theme, setTheme] = useState(null);
   const [status, setStatus] = useState('loading'); // loading | ready | notfound | error
+  const [tab, setTab] = useState('theme'); // theme | annual
 
   useEffect(() => {
     let cancelled = false;
@@ -61,18 +63,50 @@ export default function ThemeRankingPage() {
 
       {status === 'ready' && (
         <>
-          <section className="ranking-page__theme">
-            <div className="theme__frame">
-              <img
-                className="theme__image"
-                src={getThemeImageUrl(theme.image_path)}
-                alt={`お題: ${theme.title}`}
-              />
-            </div>
-            <h1 className="ranking-page__title">{theme.title}</h1>
-          </section>
+          <div className="ranking-tabs" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={tab === 'theme'}
+              className={`ranking-tabs__tab${tab === 'theme' ? ' is-active' : ''}`}
+              onClick={() => setTab('theme')}
+            >
+              このお題
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={tab === 'annual'}
+              className={`ranking-tabs__tab${tab === 'annual' ? ' is-active' : ''}`}
+              onClick={() => setTab('annual')}
+            >
+              年間ランキング
+            </button>
+          </div>
 
-          <RankingList themeId={theme.id} />
+          {tab === 'theme' && (
+            <>
+              <section className="ranking-page__theme">
+                <div className="theme__frame">
+                  <img
+                    className="theme__image"
+                    src={getThemeImageUrl(theme.image_path)}
+                    alt={`お題: ${theme.title}`}
+                  />
+                </div>
+                <h1 className="ranking-page__title">{theme.title}</h1>
+              </section>
+
+              <RankingList themeId={theme.id} />
+            </>
+          )}
+
+          {tab === 'annual' && (
+            <>
+              <h1 className="ranking-page__title">年間ランキング</h1>
+              <AnnualRankingList />
+            </>
+          )}
         </>
       )}
     </div>
