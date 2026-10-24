@@ -1065,3 +1065,44 @@ img {
   font-weight: 700;
   opacity: 1;
 }
+/* ===== 色の変更: 白(2026-10-24) ===== */
+
+/* お題の枠: 線の色を白、線幅を半分(6px → 3px) */
+.theme__frame {
+  border: 3px solid #ffffff;
+}
+
+/* ボタン類(ログイン・ログアウト・投稿・アイコン変更・保存): 白背景+暗い文字 */
+.button,
+.button--ghost {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #14213d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25); /* ライト表示で背景に埋もれないための薄い影 */
+}
+
+.button:hover:not(:disabled),
+.button--ghost:hover:not(:disabled) {
+  background: #eef1f6;
+  border-color: #eef1f6;
+}
+
+/* 順位の表示(画像左上のバッジ): 白背景+暗い文字 */
+.badge {
+  background: #ffffff;
+  color: #14213d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+/* ===== 順位の数字(ランキングページ): 白い箱+暗い文字 ===== */
+.ranking__rank {
+  padding: 4px 0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #14213d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+/* 1位の数字は元の設定で金色になっているため、同じ書き方で上書きする */
+.ranking__row--first .ranking__rank {
+  color: #14213d;
+}
