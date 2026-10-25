@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import RankingGrid from '@/components/RankingGrid';
 import { getThemeImageUrl, getPostDeadline } from '@/lib/themes';
 
@@ -35,6 +36,9 @@ export default function ThemeBox({ theme, isLatest }) {
               {isOpen ? `投稿受付中(締切 ${deadlineText})` : `投稿は締め切りました(${deadlineText})`}
             </p>
           )}
+          <p className="theme__deadline">
+            <Link href={`/theme/${theme.id}`}>このお題のランキングを見る</Link>
+          </p>
         </section>
 
         {/* 1〜3位の投稿・説明欄・広告欄 */}
