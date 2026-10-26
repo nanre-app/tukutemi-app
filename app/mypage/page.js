@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { supabase, getImageUrl } from '@/lib/supabaseClient';
 import { fetchCurrentTheme, getPostDeadline } from '@/lib/themes';
 
-const MAX_SCORE = 1000;
+const MAX_SCORE = 100;
 const AVATAR_BUCKET = 'avatars';
 const POST_BUCKET = 'post-images';
 const AVATAR_MAX_BYTES = 2 * 1024 * 1024;

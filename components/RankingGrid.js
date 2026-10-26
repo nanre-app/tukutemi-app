@@ -5,7 +5,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { supabase, getImageUrl } from '@/lib/supabaseClient';
 
 const SHOW_COUNT = 3; // 1〜3位まで表示
-const MAX_SCORE = 1000; // 仮の満点
+const MAX_SCORE = 100; // 仮の満点
 const RANKS = [1, 2, 3];
 
 function formatDateTime(value) {

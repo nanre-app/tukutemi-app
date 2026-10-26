@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase, getImageUrl } from '@/lib/supabaseClient';
 
-const MAX_SCORE = 1000;
+const MAX_SCORE = 100;
 const LIMIT = 100;
 
 export default function RankingList({ themeId }) {
