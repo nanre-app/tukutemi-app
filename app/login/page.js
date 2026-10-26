@@ -14,13 +14,15 @@ export default function LoginPage() {
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/`,
+        // ログインのたびにGoogleのアカウント選択画面を出す
+        queryParams: { prompt: 'select_account' },
       },
     });
     if (signInError) {
       setError('ログインに失敗しました。時間をおいてもう一度お試しください。');
       setBusy(false);
     }
-    // 成功時はGoogleの認証画面にリダイレクトされるので、ここでは何もしない
+    // 成功時はGoogleの認証画面にリダイレクトされるので、ここでは何もない
   }
 
   return (
