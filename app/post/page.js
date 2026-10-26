@@ -205,11 +205,16 @@ export default function PostPage() {
       .select('id')
       .single();
 
-    if (insertError) {
+        if (insertError) {
       console.error(insertError);
       // 記録に失敗したときは、アップロード済みの画像を消しておく
       await supabase.storage.from(IMAGE_BUCKET).remove([path]);
-      if (deadline && Date.now() >= deadline.getTime()) {
+      if (insertError.code === '23505') {
+        // 同じお題にすでに投稿している(1人1お題につき1枚)
+        setError(
+          'このお題にはすでに投稿済みです。投稿し直したいときは、マイページで前の投稿を削除してから、もう一度投稿してください。'
+        );
+      } else if (deadline && Date.now() >= deadline.getTime()) {
         setNow(Date.now());
         setError('このお題の投稿は締め切られました。');
       } else {
@@ -263,6 +268,18 @@ export default function PostPage() {
             : `投稿の締切まで あと ${formatRemaining(remaining)}`}
         </p>
       )}
+
+      <div className="notice" role="note">
+        <strong>投稿のルール</strong>
+        <ul style={{ margin: '4px 0 0', paddingLeft: '1.2em' }}>
+          <li>投稿は1つのお題につき1枚です。</li>
+          <li>投稿し直したいときは、マイページで前の投稿を削除してから、もう一度投稿してください。</li>
+          <li>投稿できるのは、締切までです。</li>
+          <li>生成AIで作った画像を投稿してください。</li>
+          <li>他人の作品の無断使用や、不適切な画像は削除することがあります。</li>
+          <li>早く投稿するほど、採点の「速さ」の点が高くなります。</li>
+        </ul>
+      </div>
 
       <form onSubmit={handleSubmit} className="form">
         <label className="field">
