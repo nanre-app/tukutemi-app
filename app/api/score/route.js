@@ -107,16 +107,25 @@ export async function POST(request) {
 
     const match = clamp(ai.match);
     const quality = clamp(ai.quality);
+    // 構図: 返ってこなかったときは null にして、calcTotal 側で match を代用する
+    const composition = ai.composition == null ? null : clamp(ai.composition);
     const flagged = ai.flagged === true;
     const speed = calcSpeed(theme.starts_at, post.created_at, theme.post_window_minutes);
-    const { total, appliedSpeed } = calcTotal({ match, quality, speed });
+    const {
+      total,
+      appliedSpeed,
+      composition: appliedComposition,
+      capped,
+    } = calcTotal({ match, composition, quality, speed });
     const score = flagged ? 0 : total;
 
     const detail = {
       match,
+      composition: appliedComposition,
       quality,
       speed,
       speed_applied: appliedSpeed,
+      capped,
       flagged,
       comment: String(ai.comment || '').slice(0, 40),
       model,
