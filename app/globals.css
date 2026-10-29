@@ -1106,3 +1106,58 @@ img {
 .ranking__row--first .ranking__rank {
   color: #14213d;
 }
+/* ---------- 採点の内訳 ---------- */
+.score-detail {
+  margin-top: 8px;
+}
+
+.score-detail__list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.score-detail__row {
+  display: grid;
+  grid-template-columns: 4.5em minmax(0, 1fr) 2.5em;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+}
+
+.score-detail__bar {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.score-detail__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.score-detail__value {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  text-align: right;
+}
+
+.score-detail__note {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.score-detail__comment {
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+}
+
+.mypage__meta .score-detail {
+  padding-bottom: 4px;
+}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { supabase, getImageUrl } from '@/lib/supabaseClient';
+import ScoreDetail from '@/components/ScoreDetail';
 
 const SHOW_COUNT = 3; // 1〜3位まで表示
 const MAX_SCORE = 100; // 仮の満点
@@ -42,7 +43,7 @@ export default function RankingGrid({ themeId, moreHref, canPost = true }) {
       // 得点が高い順(得点なしは後ろ)。同点なら先に投稿した方が上。「もっと見る」判定のため1件多く取る
       const { data, error } = await supabase
         .from('posts')
-        .select('id, user_id, image_path, created_at, score')
+        .select('id, user_id, image_path, created_at, score, score_detail')
         .eq('theme_id', themeId)
         .order('score', { ascending: false, nullsFirst: false })
         .order('created_at', { ascending: true })
@@ -136,6 +137,7 @@ export default function RankingGrid({ themeId, moreHref, canPost = true }) {
                   </div>
                   <p className="info__line">得点:{scoreText}</p>
                   <p className="info__line">日時:{formatDateTime(post.created_at)}</p>
+                  {first && <ScoreDetail detail={post.score_detail} />}
                   {/* 将来、いいねボタン等を入れるための空きスペース */}
                   {first && <div className="info__reserve" aria-hidden="true" />}
                 </>

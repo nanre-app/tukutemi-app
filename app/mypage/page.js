@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, getImageUrl } from '@/lib/supabaseClient';
 import { fetchCurrentTheme, getPostDeadline } from '@/lib/themes';
+import ScoreDetail from '@/components/ScoreDetail';
 
 const MAX_SCORE = 100;
 const AVATAR_BUCKET = 'avatars';
@@ -63,7 +64,7 @@ export default function MyPage() {
           .maybeSingle(),
         supabase
           .from('posts')
-          .select('id, theme_id, image_path, created_at, score')
+          .select('id, theme_id, image_path, created_at, score, score_detail')
           .eq('user_id', currentUser.id)
           .order('created_at', { ascending: false })
           .limit(100),
@@ -391,6 +392,7 @@ export default function MyPage() {
                 <p className="mypage__score">
                   {post.score != null ? `${Number(post.score)} / ${MAX_SCORE}点` : '未採点'}
                 </p>
+                <ScoreDetail detail={post.score_detail} />
               </div>
               <div className="mypage__foot">
                 <span className="grid__date">{formatDateTime(post.created_at)}</span>
