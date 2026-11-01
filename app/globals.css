@@ -1161,3 +1161,110 @@ img {
 .mypage__meta .score-detail {
   padding-bottom: 4px;
 }
+/* ===== 投稿・採点ルールのフロート表示 (globals.css の一番下に追記) ===== */
+
+/* 右下に浮かぶボタン */
+.rules-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 40;
+  padding: 10px 18px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.rules-fab:hover {
+  background: var(--notice-bg);
+}
+
+/* 画面全体の暗い背景(クリックで閉じる) */
+.rules-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ルールの本体 */
+.rules-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.rules-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.rules-panel__title {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.rules-panel__close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.rules-panel__close:hover {
+  background: var(--notice-bg);
+}
+
+.rules-panel__body {
+  padding: 8px 20px 20px;
+  overflow-y: auto;
+  font-size: 0.9375rem;
+}
+
+.rules-panel__sub {
+  margin: 20px 0 6px;
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+.rules-panel__text {
+  margin: 6px 0;
+}
+
+.rules-panel__list {
+  margin: 6px 0;
+  padding-left: 1.25rem;
+}
+
+/* スマホ: 画面下のメニューと重ならないよう、ボタンを上にずらす */
+@media (max-width: 860px) {
+  .rules-fab {
+    right: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+}

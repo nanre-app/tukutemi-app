@@ -2,6 +2,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import NavDrawer from '@/components/NavDrawer';
 import ImageGuard from '@/components/ImageGuard';
+import RulesFloat from '../components/RulesFloat';
 
 const SITE_URL = 'https://tukutemi-app.vercel.app';
 const SITE_TITLE = 'tukutemi';
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
         <Header />
         <NavDrawer />
         <ImageGuard />
+        <RulesFloat />
         <main className="container">{children}</main>
       </body>
     </html>
