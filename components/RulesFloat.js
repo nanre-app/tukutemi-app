@@ -80,7 +80,7 @@ export default function RulesFloat() {
                 </li>
               </ul>
               <p className="rules-panel__text">
-                構図の点が低い(40点未満の)ときは、合計が最大50点になります。
+                構図の点が低い(25点満点中10点未満の)ときは、合計が最大50点になります。
               </p>
 
               <h3 className="rules-panel__sub">点数の見え方</h3>
