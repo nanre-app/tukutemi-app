@@ -88,7 +88,7 @@ export default function PostPage() {
     async function init() {
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
-        router.replace('/login');
+        router.replace('/login?next=/post');
         return;
       }
 

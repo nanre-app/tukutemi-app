@@ -287,8 +287,9 @@ export default function MyPage() {
         <div className="card">
           <h1 className="card__title">マイページ</h1>
           <p>マイページを見るにはログインが必要です。</p>
-          <Link href="/login" className="button button--wide">
+          <Link href="/login?next=/mypage" className="button button--wide">
             ログインする
+          </Link>
           </Link>
         </div>
       </div>
