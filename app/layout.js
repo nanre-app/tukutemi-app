@@ -1,4 +1,5 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/Header';
 import NavDrawer from '@/components/NavDrawer';
 import ImageGuard from '@/components/ImageGuard';
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
         <ImageGuard />
         <RulesFloat />
         <main className="container">{children}</main>
+        <Analytics />
       </body>
     </html>
   );
