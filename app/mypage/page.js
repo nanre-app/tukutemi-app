@@ -290,7 +290,6 @@ export default function MyPage() {
           <Link href="/login?next=/mypage" className="button button--wide">
             ログインする
           </Link>
-          </Link>
         </div>
       </div>
     );
