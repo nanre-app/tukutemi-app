@@ -79,8 +79,12 @@ export default function RulesFloat() {
                   <strong>完成度(20点)</strong>:画像としての仕上がり
                 </li>
               </ul>
+              
               <p className="rules-panel__text">
                 構図の点が低い(25点満点中10点未満の)ときは、合計が最大50点になります。
+              </p>
+              <p className="rules-panel__text">
+                お題の画像にない要素(月・人物・文字など)が目立つときは、一致度が下がり、合計が最大55点になります。
               </p>
 
               <h3 className="rules-panel__sub">点数の見え方</h3>
