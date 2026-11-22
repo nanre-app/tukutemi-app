@@ -35,7 +35,7 @@ async function askGemini(parts) {
             contents: [{ parts }],
             generationConfig: { temperature: 0.2, responseMimeType: 'application/json' },
           }),
-          signal: AbortSignal.timeout(20000),
+          signal: AbortSignal.timeout(15000),
         }
       );
       if (res.ok) {
@@ -56,9 +56,15 @@ async function askGemini(parts) {
 
 export async function POST(request) {
   try {
-    const { postId } = await request.json();
+    const { postId, force } = await request.json();
     const token = (request.headers.get('authorization') || '').replace('Bearer ', '');
-    if (!postId || !token) {
+
+    // 運営用: 合言葉(ADMIN_RESCORE_KEY)が合っていれば、本人確認なしで採点できる
+    const adminKey = request.headers.get('x-admin-key') || '';
+    const isAdmin =
+      Boolean(process.env.ADMIN_RESCORE_KEY) && adminKey === process.env.ADMIN_RESCORE_KEY;
+
+    if (!postId || (!token && !isAdmin)) {
       return NextResponse.json({ error: 'bad request' }, { status: 400 });
     }
 
@@ -67,18 +73,25 @@ export async function POST(request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    // 呼び出したのが本人か確認
-    const { data: userData, error: userErr } = await admin.auth.getUser(token);
-    if (userErr || !userData?.user) {
-      return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+    // 運営用でなければ、呼び出したのが本人か確認
+    let callerId = null;
+    if (!isAdmin) {
+      const { data: userData, error: userErr } = await admin.auth.getUser(token);
+      if (userErr || !userData?.user) {
+        return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+      }
+      callerId = userData.user.id;
     }
 
     const { data: post } = await admin.from('posts').select('*').eq('id', postId).single();
-    if (!post || post.user_id !== userData.user.id) {
+    if (!post) {
+      return NextResponse.json({ error: 'post not found' }, { status: 404 });
+    }
+    if (!isAdmin && post.user_id !== callerId) {
       return NextResponse.json({ error: 'forbidden' }, { status: 403 });
     }
-    // 採点済みなら再採点しない
-    if (post.score_detail) {
+    // 採点済みなら再採点しない(運営用で force:true を付けたときだけ、やり直せる)
+    if (post.score_detail && !(isAdmin && force === true)) {
       return NextResponse.json({ ok: true, already: true, score: post.score });
     }
 
@@ -109,6 +122,8 @@ export async function POST(request) {
     const quality = clamp(ai.quality);
     // 構図: 返ってこなかったときは null にして、calcTotal 側で match を代用する
     const composition = ai.composition == null ? null : clamp(ai.composition);
+    // 余計な要素: 返ってこなかったときは null(追加なし扱い)
+    const extra = ai.extra == null ? null : clamp(ai.extra);
     const flagged = ai.flagged === true;
     const speed = calcSpeed(theme.starts_at, post.created_at, theme.post_window_minutes);
     const {
@@ -116,7 +131,7 @@ export async function POST(request) {
       appliedSpeed,
       composition: appliedComposition,
       capped,
-    } = calcTotal({ match, composition, quality, speed });
+    } = calcTotal({ match, composition, quality, speed, extra });
     const score = flagged ? 0 : total;
 
     const detail = {
@@ -125,6 +140,7 @@ export async function POST(request) {
       quality,
       speed,
       speed_applied: appliedSpeed,
+      extra,
       capped,
       flagged,
       comment: String(ai.comment || '').slice(0, 40),
